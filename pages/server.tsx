@@ -4,11 +4,11 @@ import Link from 'next/link';
 import { Item } from '../features/item/models/item';
 import loadItems from '../features/item/services/items';
 
-type HomeProps = {
+type ServerProps = {
   items: Item[];
 };
 
-export default function HomePage({ items }: HomeProps) {
+export default function ServerPage({ items }: ServerProps) {
   return (
     <main>
       <ul>
@@ -22,10 +22,8 @@ export default function HomePage({ items }: HomeProps) {
   );
 }
 
-export const getStaticProps: GetStaticProps<HomeProps> = async () => {
+export const getStaticProps: GetStaticProps<ServerProps> = async () => {
   try {
-    const IGNdummy = null;
-
     const items = await loadItems();
 
     if (items.length === 0) {
