@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1,
+    "title": "Todo 1",
+    "description": "Todo nr.1"
+  },
+  {
+    "id": 2,
+    "title": "Todo 2",
+    "description": "Todo nr.2"
+  },
+  {
+    "id": 3,
+    "title": "Todo 3",
+    "description": "Todo nr.3"
+  }
+]

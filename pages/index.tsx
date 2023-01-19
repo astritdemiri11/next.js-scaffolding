@@ -1,20 +1,20 @@
 import { GetStaticProps } from 'next';
 import Link from 'next/link';
 
-import { Item } from '../features/item/models/item';
-import loadItems from '../features/item/services/items';
+import { Todo } from '../features/todo';
+import readTodos from '../server/services/todo';
 
 type HomeProps = {
-  items: Item[];
+  todos: Todo[];
 };
 
-export default function HomePage({ items }: HomeProps) {
+export default function HomePage({ todos }: HomeProps) {
   return (
     <main>
       <ul>
-        {items.map((item) => (
-          <li key={item.id}>
-            <Link href={`/${item.id}`}>{item.title}</Link>
+        {todos.map((todo) => (
+          <li key={todo.id}>
+            <Link href={`/${todo.id}`}>{todo.title}</Link>
           </li>
         ))}
       </ul>
@@ -24,16 +24,14 @@ export default function HomePage({ items }: HomeProps) {
 
 export const getStaticProps: GetStaticProps<HomeProps> = async () => {
   try {
-    const IGNdummy = null;
+    const todos = await readTodos();
 
-    const items = await loadItems();
-
-    if (items.length === 0) {
+    if (todos.length === 0) {
       return { notFound: true };
     }
 
-    return { props: { items }, revalidate: 10 };
+    return { props: { todos }, revalidate: 10 };
   } catch {
-    return { props: { items: [] }, redirect: { destination: '/' } };
+    return { props: { todos: [] }, redirect: { destination: '/' } };
   }
 };

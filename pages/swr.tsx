@@ -2,23 +2,21 @@ import { GetStaticProps } from 'next';
 import { useEffect, useState } from 'react';
 import useSWR from 'swr';
 
-import { Item } from '../features/item/models/item';
-import loadItems from '../features/item/services/items';
+import { fetchTodos, Todo, Todos } from '../features/todo';
+import readTodos from '../server/services/todo';
 
 type SWRProps = {
-  items: Item[];
+  todos: Todo[];
 };
 
-export default function SWRPage({ items: paramItems }: SWRProps) {
-  const [items, setItems] = useState(paramItems);
+export default function SWRPage({ todos: serverTodos }: SWRProps) {
+  const [todos, setTodos] = useState(serverTodos);
 
-  const { data, error } = useSWR<Item[]>('/json/items.json', (url) =>
-    fetch(url).then((response) => response.json())
-  );
+  const { data, error } = useSWR<Todo[]>('todos', fetchTodos);
 
   useEffect(() => {
     if (data) {
-      setItems(data);
+      setTodos(data);
     }
   }, [data]);
 
@@ -26,31 +24,23 @@ export default function SWRPage({ items: paramItems }: SWRProps) {
     return <p>Failed to load.</p>;
   }
 
-  if (!data && !items) {
+  if (!data && !todos) {
     return <p>Loading...</p>;
   }
 
-  return (
-    <ul>
-      {items.map((item) => (
-        <li key={item.id}>
-          {item.title} - ${item.description}
-        </li>
-      ))}
-    </ul>
-  );
+  return <Todos items={todos} />;
 }
 
 export const getStaticProps: GetStaticProps<SWRProps> = async () => {
   try {
-    const items = await loadItems();
+    const todos = await readTodos();
 
-    if (items.length === 0) {
+    if (todos.length === 0) {
       return { notFound: true };
     }
 
-    return { props: { items }, revalidate: 10 };
+    return { props: { todos }, revalidate: 10 };
   } catch {
-    return { props: { items: [] }, redirect: { destination: '/' } };
+    return { props: { todos: [] }, redirect: { destination: '/' } };
   }
 };
