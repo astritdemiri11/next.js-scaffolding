@@ -1,24 +1,11 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { ParsedUrlQuery } from 'querystring';
 
-import { Todo } from '../features/todo';
-import readTodos from '../server/services/todo';
-
-type TodoProps = {
-  todo: Todo | null;
-};
+import { readFeaturedTodos, readTodos } from '../lib/todo';
+import { Todo, TodoProps } from '../views';
 
 export default function TodoPage({ todo }: TodoProps) {
-  if (!todo) {
-    return <h1>Todo not found!</h1>;
-  }
-
-  return (
-    <>
-      <h1>{todo.title}</h1>
-      <p>{todo.description}</p>
-    </>
-  );
+  return <Todo todo={todo} />;
 }
 
 interface Params extends ParsedUrlQuery {
@@ -54,15 +41,13 @@ export const getStaticProps: GetStaticProps<TodoProps, Params> = async ({
 
 export const getStaticPaths: GetStaticPaths<Params> = async () => {
   try {
-    const todos = await readTodos();
+    const todos = await readFeaturedTodos();
 
     if (todos.length === 0) {
       return { paths: [], fallback: 'blocking' };
     }
 
-    const paths = todos
-      .slice(0, 2)
-      .map((todo) => ({ params: { todoId: `${todo.id}` } }));
+    const paths = todos.map((todo) => ({ params: { todoId: `${todo.id}` } }));
 
     return { paths, fallback: 'blocking' };
   } catch {

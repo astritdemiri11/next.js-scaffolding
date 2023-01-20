@@ -42,6 +42,69 @@
       {
         "devDependencies": ["**/*.test.ts", "**/*.test.tsx", "**/*.stories.tsx"]
       }
+    ],
+    "import/no-restricted-paths": [
+      "error",
+      {
+        "zones": [
+          {
+            "target": "./components",
+            "from": "./layouts"
+          },
+          {
+            "target": "./components",
+            "from": "./lib"
+          },
+          {
+            "target": "./components",
+            "from": "./pages"
+          },
+          {
+            "target": "./components",
+            "from": "./views"
+          },
+          {
+            "target": "./layouts",
+            "from": "./lib"
+          },
+          {
+            "target": "./layouts",
+            "from": "./pages"
+          },
+          {
+            "target": "./layouts",
+            "from": "./views"
+          },
+          {
+            "target": "./modules",
+            "from": "./components"
+          },
+          {
+            "target": "./modules",
+            "from": "./layouts"
+          },
+          {
+            "target": "./modules",
+            "from": "./lib"
+          },
+          {
+            "target": "./modules",
+            "from": "./modules"
+          },
+          {
+            "target": "./modules",
+            "from": "./pages"
+          },
+          {
+            "target": "./modules",
+            "from": "./views"
+          },
+          {
+            "target": "./views",
+            "from": "./pages"
+          }
+        ]
+      }
     ]
   }
 }

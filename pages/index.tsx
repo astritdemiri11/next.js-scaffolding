@@ -1,25 +1,10 @@
 import { GetStaticProps } from 'next';
-import Link from 'next/link';
 
-import { Todo } from '../features/todo';
-import readTodos from '../server/services/todo';
-
-type HomeProps = {
-  todos: Todo[];
-};
+import { readTodos } from '../lib/todo';
+import { Home, HomeProps } from '../views';
 
 export default function HomePage({ todos }: HomeProps) {
-  return (
-    <main>
-      <ul>
-        {todos.map((todo) => (
-          <li key={todo.id}>
-            <Link href={`/${todo.id}`}>{todo.title}</Link>
-          </li>
-        ))}
-      </ul>
-    </main>
-  );
+  return <Home todos={todos} />;
 }
 
 export const getStaticProps: GetStaticProps<HomeProps> = async () => {

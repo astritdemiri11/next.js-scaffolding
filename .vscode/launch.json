@@ -23,6 +23,18 @@
         "uriFormat": "%s",
         "action": "debugWithChrome"
       }
+    },
+    {
+      "name": "Storybook: debug server-side",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "npm run storybook"
+    },
+    {
+      "name": "Storybook: debug client-side",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:6006"
     }
   ]
 }
